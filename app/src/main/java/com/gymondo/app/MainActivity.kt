@@ -1,4 +1,4 @@
-package com.example.gymondo
+package com.gymondo.app
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

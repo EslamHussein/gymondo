@@ -1,4 +1,4 @@
-package com.example.gymondo
+package com.gymondo.app
 
 import org.junit.Test
 

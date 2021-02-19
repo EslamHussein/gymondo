@@ -1,6 +1,6 @@
-import com.gymondo.app.Libraries
-import com.gymondo.app.Modules
 import com.gymondo.app.Configration
+import com.gymondo.app.Libraries
+
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
@@ -44,5 +44,7 @@ dependencies {
 
     testImplementation(Libraries.Testing.junit)
     testImplementation(Libraries.Testing.mockito)
+
+    androidTestImplementation(Libraries.Testing.junitExt)
     androidTestImplementation(Libraries.Testing.espresso)
 }
