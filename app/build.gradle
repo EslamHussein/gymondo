@@ -1,18 +1,21 @@
+import com.gymondo.app.Libraries
+import com.gymondo.app.Modules
+import com.gymondo.app.Configration
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'kotlin-android-extensions'
 }
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion "30.0.2"
+    compileSdkVersion Configration.Android.compileSdk
 
     defaultConfig {
-        applicationId "com.example.gymondo"
-        minSdkVersion 21
-        targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
+        applicationId Configration.Android.applicationId
+        minSdkVersion Configration.Android.mindSdk
+        targetSdkVersion Configration.Android.targetSdk
+        versionCode Configration.Android.versionCode
+        versionName Configration.Android.versionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -33,13 +36,13 @@ android {
 }
 
 dependencies {
+    implementation Libraries.Kotlin.kotlinStdlib
+    implementation Libraries.AndroidXSupport.appcompat
+    implementation Libraries.AndroidXSupport.coreKTX
+    implementation Libraries.AndroidXSupport.constraintLayout
+    implementation Libraries.AndroidXSupport.material
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.core:core-ktx:1.3.2'
-    implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'com.google.android.material:material:1.3.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    testImplementation 'junit:junit:4.+'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    testImplementation(Libraries.Testing.junit)
+    testImplementation(Libraries.Testing.mockito)
+    androidTestImplementation(Libraries.Testing.espresso)
 }
