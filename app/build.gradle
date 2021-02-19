@@ -1,5 +1,6 @@
 import com.gymondo.app.Configration
 import com.gymondo.app.Libraries
+import com.gymondo.app.Modules
 
 plugins {
     id 'com.android.application'
@@ -32,10 +33,18 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+        // Enable Coroutines and Flow APIs
+        freeCompilerArgs += "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi"
+        freeCompilerArgs += "-Xopt-in=kotlinx.coroutines.FlowPreview"
+
     }
 }
 
 dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation project(Modules.remote)
+
     implementation Libraries.Kotlin.kotlinStdlib
     implementation Libraries.AndroidXSupport.appcompat
     implementation Libraries.AndroidXSupport.coreKTX
@@ -44,6 +53,10 @@ dependencies {
 
     testImplementation(Libraries.Testing.junit)
     testImplementation(Libraries.Testing.mockito)
+
+    implementation Libraries.Koin.koin
+    implementation Libraries.Coroutines.coroutines
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.8"
 
     androidTestImplementation(Libraries.Testing.junitExt)
     androidTestImplementation(Libraries.Testing.espresso)

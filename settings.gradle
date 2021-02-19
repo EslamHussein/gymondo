@@ -1,2 +1,4 @@
+include ':remote'
+include ':Domain'
 include ':app'
 rootProject.name = "Gymondo"

@@ -4,7 +4,7 @@ object Modules {
     val app = ":app"
     val data = ":Data"
     val domain = ":Domain"
-    val remote = ":Remote"
+    val remote = ":remote"
     val presentation = ":presentation"
 }
 
@@ -32,7 +32,7 @@ public object Configration {
 
 public object Libraries {
     object Network {
-        private const val retrofitVersion = "2.5.0"
+        private const val retrofitVersion = "2.9.0"
         private const val okhttpVersion = "3.12.0"
 
         const val retrofit = "com.squareup.retrofit2:retrofit:$retrofitVersion"
@@ -65,6 +65,11 @@ public object Libraries {
             "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${Configration.Android.kotlinVersion}"
         const val kotlinReflect =
             "org.jetbrains.kotlin:kotlin-reflect:${Configration.Android.kotlinVersion}"
+    }
+
+    object Coroutines {
+        private const val coroutinesVersion = "1.3.5"
+        const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"
     }
 
     object Koin {

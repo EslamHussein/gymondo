@@ -1,0 +1,21 @@
+import com.gymondo.app.Libraries
+import com.gymondo.app.Configration
+plugins {
+    id 'java-library'
+    id 'kotlin'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+dependencies {
+    implementation Libraries.Kotlin.kotlinStdlib
+
+    implementation Libraries.Koin.koin
+    implementation Libraries.Koin.koinTest
+
+    testImplementation Libraries.Testing.junit
+    testImplementation Libraries.Testing.mockito
+}

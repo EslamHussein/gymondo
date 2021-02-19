@@ -1,0 +1,28 @@
+import com.gymondo.app.Libraries
+plugins {
+    id 'java-library'
+    id 'kotlin'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation Libraries.Kotlin.kotlinStdlib
+
+    implementation Libraries.Network.retrofit
+    implementation Libraries.Network.retrofitGsonConverter
+    implementation Libraries.Network.okhttpLoggingInterceptor
+    implementation Libraries.Network.okhttpMockServer
+
+    implementation Libraries.Koin.koin
+    testImplementation Libraries.Koin.koinTest
+    implementation Libraries.Coroutines.coroutines
+
+    testImplementation Libraries.Testing.junit
+    testImplementation Libraries.Testing.mockito
+}
