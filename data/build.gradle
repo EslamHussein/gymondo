@@ -12,20 +12,13 @@ java {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation project(Modules.data)
+    implementation project(Modules.domain)
 
     implementation Libraries.Kotlin.kotlinStdlib
-
-    implementation Libraries.Network.retrofit
-    implementation Libraries.Network.retrofitGsonConverter
-    implementation Libraries.Network.okhttpLoggingInterceptor
-    implementation Libraries.Network.okhttpMockServer
-
     implementation Libraries.Koin.koin
-    testImplementation Libraries.Koin.koinTest
     implementation Libraries.Coroutines.coroutines
 
     testImplementation Libraries.Testing.junit
+    testImplementation Libraries.Koin.koinTest
     testImplementation Libraries.Testing.mockito
 }

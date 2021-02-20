@@ -1,31 +1,54 @@
 package com.gymondo.app.remote
 
-import com.gymondo.app.remote.core.dto.ApiResult
-import com.gymondo.app.remote.dto.RepositoryModel
-import com.gymondo.app.remote.dto.SearchResponseModel
+import com.gymondo.app.remote.mapper.RepositoryMapper
+import com.gymondo.app.remote.mapper.SearchResponseMapper
+import com.gymondo.data.model.DataResult
+import com.gymondo.data.model.RepositoryEntity
+import com.gymondo.data.model.SearchResponseEntity
+import com.gymondo.data.repository.GitHubRemoteDataSource
 
-class GitHubRemoteDataSourceImpl(private val gitHubApi: GitHubApi) :
+class GitHubRemoteDataSourceImpl(
+    private val gitHubApi: GitHubApi,
+    private val searchResponseMapper: SearchResponseMapper,
+    private val repositoryMapper: RepositoryMapper
+) :
     GitHubRemoteDataSource {
     override suspend fun searchRepositories(
         query: String,
         pageNumber: Int,
         itemsPerPage: Int
-    ): ApiResult<SearchResponseModel> {
+    ): DataResult<SearchResponseEntity> {
         return try {
-            ApiResult.Success(gitHubApi.searchRepositories(query, pageNumber, itemsPerPage))
+            DataResult.Success(
+                searchResponseMapper.mapFromModel(
+                    gitHubApi.searchRepositories(
+                        query,
+                        pageNumber,
+                        itemsPerPage
+                    )
+                )
+            )
         } catch (ex: Exception) {
-            ApiResult.Error(ex)
+            DataResult.Error(ex)
         }
     }
 
     override suspend fun getRepoDetails(
         user: String,
         repoName: String
-    ): ApiResult<RepositoryModel> {
+    ): DataResult<RepositoryEntity> {
+
         return try {
-            ApiResult.Success(gitHubApi.getRepoDetails(user, repoName))
+            DataResult.Success(
+                repositoryMapper.mapFromModel(
+                    gitHubApi.getRepoDetails(
+                        user,
+                        repoName
+                    )
+                )
+            )
         } catch (ex: Exception) {
-            ApiResult.Error(ex)
+            DataResult.Error(ex)
         }
     }
 }

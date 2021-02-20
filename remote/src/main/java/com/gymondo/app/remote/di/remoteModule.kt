@@ -2,9 +2,12 @@ package com.gymondo.app.remote.di
 
 import com.google.gson.GsonBuilder
 import com.gymondo.app.remote.GitHubApi
-import com.gymondo.app.remote.GitHubRemoteDataSource
 import com.gymondo.app.remote.GitHubRemoteDataSourceImpl
 import com.gymondo.app.remote.core.RemoteConfig
+import com.gymondo.app.remote.mapper.OwnerMapper
+import com.gymondo.app.remote.mapper.RepositoryMapper
+import com.gymondo.app.remote.mapper.SearchResponseMapper
+import com.gymondo.data.repository.GitHubRemoteDataSource
 import okhttp3.OkHttpClient
 import org.koin.dsl.bind
 import org.koin.dsl.module
@@ -33,6 +36,9 @@ val remoteModule = module {
         get<Retrofit>().create(GitHubApi::class.java)
     }
 
-    factory { GitHubRemoteDataSourceImpl(get()) } bind GitHubRemoteDataSource::class
+    factory { GitHubRemoteDataSourceImpl(get(), get(), get()) } bind GitHubRemoteDataSource::class
 
+    single { OwnerMapper() }
+    single { RepositoryMapper(get()) }
+    single { SearchResponseMapper(get()) }
 }

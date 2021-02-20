@@ -1,7 +1,8 @@
 package com.gymondo.app.remote
 
-import com.gymondo.app.remote.core.dto.ApiResult
 import com.gymondo.app.remote.di.remoteModule
+import com.gymondo.data.model.DataResult
+import com.gymondo.data.repository.GitHubRemoteDataSource
 import com.nhaarman.mockitokotlin2.any
 import kotlinx.coroutines.runBlocking
 import okhttp3.mockwebserver.MockResponse
@@ -38,7 +39,7 @@ class GitHubRemoteDataSourceImplTest : AutoCloseKoinTest() {
         }
         mockServer.enqueue(mockedResponse)
         val result = gitHubRemoteDataSource.searchRepositories("any", 1, 1)
-        assert(result is ApiResult.Success)
+        assert(result is DataResult.Success)
     }
 
 
@@ -51,7 +52,7 @@ class GitHubRemoteDataSourceImplTest : AutoCloseKoinTest() {
         }
         mockServer.enqueue(mockedResponse)
         val result = gitHubRemoteDataSource.searchRepositories(any(), any(), any())
-        assert(result is ApiResult.Error)
+        assert(result is DataResult.Error)
     }
 
 
@@ -65,7 +66,7 @@ class GitHubRemoteDataSourceImplTest : AutoCloseKoinTest() {
         }
         mockServer.enqueue(mockedResponse)
         val result = gitHubRemoteDataSource.getRepoDetails("entityframeworktutorial", "EF6-DBFirst-Demo")
-        assert(result is ApiResult.Success)
+        assert(result is DataResult.Success)
     }
 
 
@@ -78,7 +79,7 @@ class GitHubRemoteDataSourceImplTest : AutoCloseKoinTest() {
         }
         mockServer.enqueue(mockedResponse)
         val result = gitHubRemoteDataSource.getRepoDetails("user", "repoName")
-        assert(result is ApiResult.Error)
+        assert(result is DataResult.Error)
     }
 
     private fun getJson(path: String): String {

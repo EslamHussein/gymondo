@@ -2,7 +2,7 @@ package com.gymondo.app
 
 object Modules {
     val app = ":app"
-    val data = ":Data"
+    val data = ":data"
     val domain = ":Domain"
     val remote = ":remote"
     val presentation = ":presentation"
