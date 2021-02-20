@@ -22,14 +22,17 @@ class GitHubRemoteDataSourceImpl(
         pageNumber: Int,
         itemsPerPage: Int
     ): Flow<SearchResponseEntity> {
-        return flow<SearchResponseEntity> {
-            searchResponseMapper.mapFromModel(
-                gitHubApi.searchRepositories(
-                    query,
-                    pageNumber,
-                    itemsPerPage
+        return flow {
+            emit(
+                searchResponseMapper.mapFromModel(
+                    gitHubApi.searchRepositories(
+                        query,
+                        pageNumber,
+                        itemsPerPage
+                    )
                 )
             )
+
         }.flowOn(ioDispatcher)
     }
 
@@ -37,11 +40,13 @@ class GitHubRemoteDataSourceImpl(
         user: String,
         repoName: String
     ): Flow<RepositoryEntity> {
-        return flow<RepositoryEntity> {
-            repositoryMapper.mapFromModel(
-                gitHubApi.getRepoDetails(
-                    user,
-                    repoName
+        return flow {
+            emit(
+                repositoryMapper.mapFromModel(
+                    gitHubApi.getRepoDetails(
+                        user,
+                        repoName
+                    )
                 )
             )
         }.flowOn(ioDispatcher)

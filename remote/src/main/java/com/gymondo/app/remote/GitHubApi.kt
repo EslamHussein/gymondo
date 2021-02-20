@@ -8,7 +8,7 @@ import retrofit2.http.Query
 
 interface GitHubApi {
 
-    @GET("search/repositories")
+    @GET("search/repositoriess")
     suspend fun searchRepositories(
         @Query("q") query: String,
         @Query("page") page: Int,

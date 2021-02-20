@@ -47,7 +47,7 @@ public object Libraries {
         private const val materialVersion = "1.3.0"
         private const val constraintLayoutVersion = "2.0.4"
         private const val ktxVersion = "1.3.2"
-        private const val lifecycleVersion = "2.0.0"
+        private const val lifecycleVersion = "2.3.0"
 
 
         const val coreKTX = "androidx.core:core-ktx:$ktxVersion"
@@ -56,6 +56,12 @@ public object Libraries {
             "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
 
         const val material = "com.google.android.material:material:$materialVersion"
+
+        const val viewModel = "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"
+        const val liveData = "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion"
+        const val viewModelSavedState =
+            "androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycleVersion"
+
 
     }
 
@@ -70,11 +76,15 @@ public object Libraries {
     object Coroutines {
         private const val coroutinesVersion = "1.3.5"
         const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"
+        const val coroutinesCore =
+            "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion"
     }
 
     object Koin {
         private const val koinVersion = "2.2.2"
         const val koin = "org.koin:koin-android:$koinVersion"
+        const val koinViewModel = "org.koin:koin-androidx-viewmodel:$koinVersion"
+
         const val koinTest = "org.koin:koin-test:$koinVersion"
     }
 
