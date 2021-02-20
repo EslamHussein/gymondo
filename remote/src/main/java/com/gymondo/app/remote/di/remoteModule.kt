@@ -8,6 +8,7 @@ import com.gymondo.app.remote.mapper.OwnerMapper
 import com.gymondo.app.remote.mapper.RepositoryMapper
 import com.gymondo.app.remote.mapper.SearchResponseMapper
 import com.gymondo.data.repository.GitHubRemoteDataSource
+import kotlinx.coroutines.Dispatchers
 import okhttp3.OkHttpClient
 import org.koin.dsl.bind
 import org.koin.dsl.module
@@ -36,8 +37,16 @@ val remoteModule = module {
         get<Retrofit>().create(GitHubApi::class.java)
     }
 
-    factory { GitHubRemoteDataSourceImpl(get(), get(), get()) } bind GitHubRemoteDataSource::class
+    factory {
+        GitHubRemoteDataSourceImpl(
+            get(),
+            get(),
+            get(),
+            get() // TODO should be inject by interface in testing
+        )
+    } bind GitHubRemoteDataSource::class
 
+    factory { Dispatchers.IO }
     single { OwnerMapper() }
     single { RepositoryMapper(get()) }
     single { SearchResponseMapper(get()) }

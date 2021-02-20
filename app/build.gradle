@@ -45,6 +45,7 @@ dependencies {
 
     implementation project(Modules.remote)
     implementation project(Modules.data)
+    implementation project(Modules.domain)
 
     implementation Libraries.Kotlin.kotlinStdlib
     implementation Libraries.AndroidXSupport.appcompat
