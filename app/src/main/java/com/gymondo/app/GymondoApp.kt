@@ -2,6 +2,7 @@ package com.gymondo.app
 
 import android.app.Application
 import com.gymondo.app.remote.di.remoteModule
+import com.gymondo.data.di.dataModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -12,7 +13,7 @@ class GymondoApp : Application() {
         startKoin() {
             androidContext(this@GymondoApp)
             androidLogger()
-            modules(listOf( remoteModule))
+            modules(listOf(remoteModule, dataModule))
         }
 
     }

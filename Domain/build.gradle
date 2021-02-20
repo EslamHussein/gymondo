@@ -12,6 +12,7 @@ java {
 
 dependencies {
     implementation Libraries.Kotlin.kotlinStdlib
+    implementation Libraries.Coroutines.coroutines
 
     implementation Libraries.Koin.koin
     implementation Libraries.Koin.koinTest
