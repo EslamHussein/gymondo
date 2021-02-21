@@ -31,9 +31,10 @@ class GitHubSearchUseCase(private val gitHubRepository: GitHubRepository) :
                 nextPage: Int = 1,
                 itemsPerPage: Int
             ): Params {
-                if (totalItemsCounter == null)
-                    return Params(query, null, 1, itemsPerPage)
-                val totalNumberOfPages = (totalItemsCounter / itemsPerPage) + 1
+                val totalNumberOfPages = if (totalItemsCounter == null)
+                    null
+                else
+                    (totalItemsCounter / itemsPerPage) + 1
                 return Params(query, totalNumberOfPages, nextPage, itemsPerPage)
             }
         }
