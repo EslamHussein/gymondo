@@ -24,9 +24,9 @@ class GitHubViewModel(
 
 ) : ViewModel() {
 
-    private val repositoriesMutableLiveData: MutableLiveData<Resource<List<RepositoryView>>> by lazy {
-        MutableLiveData()
-    }
+     val repositoriesMutableLiveData: MutableLiveData<Resource<List<RepositoryView>>> by lazy {
+         MutableLiveData()
+     }
 
     fun search(q: String) {
         viewModelScope.launch {

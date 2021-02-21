@@ -9,6 +9,7 @@ class GitHubSearchUseCase(private val gitHubRepository: GitHubRepository) :
     UseCase<GitHubSearchUseCase.Params, Flow<SearchResponse>> {
 
     override suspend fun execute(params: Params): Flow<SearchResponse> {
+
         return gitHubRepository.searchRepositories(params)
     }
 

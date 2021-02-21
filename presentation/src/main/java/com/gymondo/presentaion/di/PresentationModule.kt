@@ -13,6 +13,6 @@ val presentationModule = module {
     single { RepositoryMapper(get()) }
     single { SearchResponseMapper(get()) }
     viewModel {
-        GitHubViewModel(get(), get(), get())
+        GitHubViewModel(get(), get(), get(), get())
     }
 }

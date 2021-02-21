@@ -26,6 +26,9 @@ public object Configration {
         const val gradle = "com.android.tools.build:gradle:$gradleVersion"
         const val kotlinGradle =
             "org.jetbrains.kotlin:kotlin-gradle-plugin:${Android.kotlinVersion}"
+        const val navigationSafeArgs =
+            "androidx.navigation:navigation-safe-args-gradle-plugin:${Libraries.AndroidXSupport.navVersion}"
+
     }
 
 }
@@ -48,7 +51,7 @@ public object Libraries {
         private const val constraintLayoutVersion = "2.0.4"
         private const val ktxVersion = "1.3.2"
         private const val lifecycleVersion = "2.3.0"
-
+        const val navVersion = "2.3.1"
 
         const val coreKTX = "androidx.core:core-ktx:$ktxVersion"
         const val appcompat = "androidx.appcompat:appcompat:$appCompact"
@@ -62,9 +65,10 @@ public object Libraries {
         const val viewModelSavedState =
             "androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycleVersion"
 
+        const val navigationFragment = "androidx.navigation:navigation-fragment-ktx:$navVersion"
+        const val navigationUi = "androidx.navigation:navigation-ui-ktx:$navVersion"
 
     }
-
 
     object Kotlin {
         const val kotlinStdlib =
@@ -82,9 +86,9 @@ public object Libraries {
 
     object Koin {
         private const val koinVersion = "2.2.2"
+
         const val koin = "org.koin:koin-android:$koinVersion"
         const val koinViewModel = "org.koin:koin-androidx-viewmodel:$koinVersion"
-
         const val koinTest = "org.koin:koin-test:$koinVersion"
     }
 

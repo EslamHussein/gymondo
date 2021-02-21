@@ -62,6 +62,10 @@ dependencies {
     implementation Libraries.Coroutines.coroutines
     implementation Libraries.Coroutines.coroutinesCore
 
+
+    implementation Libraries.AndroidXSupport.navigationFragment
+    implementation Libraries.AndroidXSupport.navigationUi
+
     androidTestImplementation(Libraries.Testing.junitExt)
     androidTestImplementation(Libraries.Testing.espresso)
 }

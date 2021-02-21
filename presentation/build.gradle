@@ -1,9 +1,11 @@
 import com.gymondo.app.Configration
 import com.gymondo.app.Libraries
 import com.gymondo.app.Modules
+
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
+    id 'androidx.navigation.safeargs.kotlin'
 }
 
 android {
@@ -36,6 +38,10 @@ android {
         freeCompilerArgs += "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi"
         freeCompilerArgs += "-Xopt-in=kotlinx.coroutines.FlowPreview"
     }
+    buildFeatures {
+        viewBinding true
+    }
+
 }
 
 dependencies {
@@ -47,9 +53,14 @@ dependencies {
     implementation Libraries.AndroidXSupport.constraintLayout
     implementation Libraries.AndroidXSupport.material
 
+    implementation Libraries.AndroidXSupport.navigationFragment
+    implementation Libraries.AndroidXSupport.navigationUi
+
     implementation Libraries.AndroidXSupport.viewModel
     implementation Libraries.AndroidXSupport.liveData
     implementation Libraries.AndroidXSupport.viewModelSavedState
+
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
     testImplementation(Libraries.Testing.junit)
     testImplementation(Libraries.Testing.mockito)
