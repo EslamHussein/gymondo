@@ -1,23 +1,32 @@
 package com.gymondo.app.remote
 
+import app.cash.turbine.test
 import com.gymondo.app.remote.di.remoteModule
 import com.gymondo.data.repository.GitHubRemoteDataSource
 import com.nhaarman.mockitokotlin2.any
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.TestCoroutineDispatcher
+import kotlinx.coroutines.test.runBlockingTest
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.koin.core.context.startKoin
 import org.koin.test.AutoCloseKoinTest
 import org.koin.test.get
 import java.io.File
+import kotlin.time.ExperimentalTime
 
 class GitHubRemoteDataSourceImplTest : AutoCloseKoinTest() {
 
     private lateinit var mockServer: MockWebServer
     private lateinit var gitHubRemoteDataSource: GitHubRemoteDataSource
+
+    @ExperimentalCoroutinesApi
+    private val dispatcher = TestCoroutineDispatcher()
 
     @Before
     fun setUp() {
@@ -30,29 +39,35 @@ class GitHubRemoteDataSourceImplTest : AutoCloseKoinTest() {
         gitHubRemoteDataSource = get()
     }
 
+    @ExperimentalTime
     @Test
-    fun `test github search with success response`() = runBlocking {
-
-        val mockedResponse = MockResponse().apply {
-            setResponseCode(200)
-            setBody(getJson("json/GitHub/repo_search.json"))
+    fun `test github search with success response`() {
+        runBlockingTest {
+            val mockedResponse = MockResponse().apply {
+                setResponseCode(200)
+                setBody(getJson("json/GitHub/repo_search.json"))
+            }
+            mockServer.enqueue(mockedResponse)
+            gitHubRemoteDataSource.searchRepositories("any", 1, 1)
+                .test {
+                    Assert.assertNotNull(this)
+                    expectError()
+                }
         }
-        mockServer.enqueue(mockedResponse)
-        val result = gitHubRemoteDataSource.searchRepositories("any", 1, 1).first()
-        assert(result != null)
     }
 
-
     @Test(expected = Exception::class)
-    fun `test github search with error response`() = runBlocking {
+    fun `test github search with error response`() {
+        runBlocking {
 
-        val mockedResponse = MockResponse().apply {
-            setResponseCode(404)
-            setBody(getJson("json/GitHub/error.json"))
+            val mockedResponse = MockResponse().apply {
+                setResponseCode(404)
+                setBody(getJson("json/GitHub/error.json"))
+            }
+            mockServer.enqueue(mockedResponse)
+            gitHubRemoteDataSource.searchRepositories(any(), any(), any()).first()
+
         }
-        mockServer.enqueue(mockedResponse)
-        gitHubRemoteDataSource.searchRepositories(any(), any(), any()).first()
-
     }
 
 

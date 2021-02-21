@@ -28,4 +28,7 @@ dependencies {
 
     testImplementation Libraries.Testing.junit
     testImplementation Libraries.Testing.mockito
+    testImplementation Libraries.Coroutines.coroutinesTest
+    testImplementation Libraries.Testing.turbine
+
 }

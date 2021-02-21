@@ -82,6 +82,8 @@ public object Libraries {
         const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"
         const val coroutinesCore =
             "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion"
+        const val coroutinesTest =
+            "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion"
     }
 
     object Coil {
@@ -103,10 +105,12 @@ public object Libraries {
         private const val junitExtVersion = "1.1.2"
         private const val kotlinMockito = "2.2.0"
         private const val espressoVersion = "3.1.0"
+        private const val turbineVersion = "0.4.0"
 
         const val junit = "junit:junit:$junitVersion"
         const val junitExt = "androidx.test.ext:junit:$junitExtVersion"
         const val mockito = "com.nhaarman.mockitokotlin2:mockito-kotlin:$kotlinMockito"
         const val espresso = "androidx.test.espresso:espresso-core:$espressoVersion"
+        const val turbine = "app.cash.turbine:turbine:$turbineVersion"
     }
 }
