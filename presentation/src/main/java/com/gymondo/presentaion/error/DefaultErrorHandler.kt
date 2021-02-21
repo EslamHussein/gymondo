@@ -1,6 +1,7 @@
 package com.gymondo.presentaion.error
 
 import android.content.res.Resources
+import com.gymondo.app.domain.error.NoMoreDataFoundException
 import com.gymondo.presentaion.R
 import java.io.IOException
 import java.net.SocketException
@@ -16,6 +17,12 @@ internal class DefaultErrorHandler constructor(private val resourceManager: Reso
             -> resourceManager.getString(R.string.no_internet_connection)
             is SocketTimeoutException -> {
                 resourceManager.getString(R.string.timeout_error_message)
+            }
+            is EmptyDataException -> {
+                resourceManager.getString(R.string.cannot_found_data)
+            }
+            is NoMoreDataFoundException -> {
+                resourceManager.getString(R.string.no_more_data_found)
             }
             else -> resourceManager.getString(R.string.unknown_error)
         }

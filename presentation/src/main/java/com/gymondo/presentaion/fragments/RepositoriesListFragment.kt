@@ -14,6 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import com.gymondo.presentaion.EndlessRecyclerViewScrollListener
 import com.gymondo.presentaion.GitHubViewModel
 import com.gymondo.presentaion.R
@@ -29,7 +30,7 @@ class RepositoriesListFragment : Fragment(R.layout.fragment_repositories_list),
     RepositoriesListAdapter.OnRepositoryClickListener {
 
     private var binding: FragmentRepositoriesListBinding? = null
-    private var projectsAdapter: RepositoriesListAdapter? = null
+    private var repositoriesAdapter: RepositoriesListAdapter? = null
     private val viewModel: GitHubViewModel by sharedViewModel()
 
     private lateinit var viewManager: LinearLayoutManager
@@ -55,40 +56,72 @@ class RepositoriesListFragment : Fragment(R.layout.fragment_repositories_list),
         retainInstance = true
         viewManager = LinearLayoutManager(context)
 
-        projectsAdapter = RepositoriesListAdapter(onRepositoryClicked = this)
+        repositoriesAdapter = RepositoriesListAdapter(onRepositoryClicked = this)
 
         binding?.repositoriesRecyclerView?.apply {
             layoutManager = viewManager
-            adapter = projectsAdapter
+            adapter = repositoriesAdapter
         }
+        binding?.swipeRefreshLayout?.isEnabled = false
+
         lifecycleScope.launchWhenStarted {
             viewModel.repositoriesStateFlow.collect {
-
                 when (it) {
-
-                    is RepositoriesListState.Failure -> {
-                    }
-
-                    RepositoriesListState.Idle -> {
-
-                    }
-                    RepositoriesListState.Loading -> {
-                    }
-                    is RepositoriesListState.Success -> projectsAdapter?.updateData(it.data)
+                    is RepositoriesListState.Failure -> onFailure(it.failureMessage)
+                    RepositoriesListState.Idle -> onIdle()
+                    RepositoriesListState.Loading -> onLoading()
+                    is RepositoriesListState.Success -> onSuccess(it.data)
                 }
-
             }
         }
 
+        binding?.repositoriesRecyclerView?.addOnScrollListener(object :
+            EndlessRecyclerViewScrollListener(viewManager) {
+            override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
+                viewModel.loadMore(page.plus(1))
+            }
+        })
+    }
 
-//       projectsSearchSwipeRefresh.isEnabled = false
+    private fun onSuccess(reposList: List<RepositoryView>) {
+        repositoriesAdapter?.updateData(reposList)
+        binding?.swipeRefreshLayout?.isRefreshing = false
+        binding?.repositoriesRecyclerView?.visibility = View.VISIBLE
 
-        binding?.repositoriesRecyclerView
-            ?.addOnScrollListener(object : EndlessRecyclerViewScrollListener(viewManager) {
-                override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
-                    viewModel.loadMore(page.plus(1))
-                }
-            })
+
+    }
+
+    private fun onFailure(failureMsg: String) {
+        if (repositoriesAdapter?.itemCount ?: 0 == 0) {
+
+            binding?.msgTextView?.let {
+                it.text = failureMsg
+                it.visibility = View.VISIBLE
+            }
+
+        } else {
+            view?.let {
+                Snackbar.make(it, failureMsg, Snackbar.LENGTH_LONG).show()
+            }
+        }
+        binding?.swipeRefreshLayout?.isRefreshing = false
+
+    }
+
+    private fun onIdle() {
+        repositoriesAdapter?.updateData(emptyList())
+        binding?.swipeRefreshLayout?.isRefreshing = false
+        binding?.msgTextView?.let {
+            it.text = getString(R.string.start_typing_to_search)
+            it.visibility = View.VISIBLE
+        }
+        binding?.repositoriesRecyclerView?.visibility = View.GONE
+    }
+
+
+    private fun onLoading() {
+        binding?.swipeRefreshLayout?.isRefreshing = true
+        binding?.msgTextView?.visibility = View.GONE
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -102,25 +135,21 @@ class RepositoriesListFragment : Fragment(R.layout.fragment_repositories_list),
         searchView?.setSearchableInfo(searchManager.getSearchableInfo(activity?.componentName))
         queryTextListener = object : SearchView.OnQueryTextListener {
             override fun onQueryTextChange(newText: String): Boolean {
-                Log.i("onQueryTextChange", newText)
                 return true
             }
 
             override fun onQueryTextSubmit(query: String): Boolean {
-                Log.i("onQueryTextSubmit", query)
                 viewModel.search(query)
                 return true
             }
         }
         searchView?.setOnQueryTextListener(queryTextListener)
-
         super.onCreateOptionsMenu(menu, inflater)
-
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.action_search) {
-            return false
+            searchView?.isFocusable = false
         }
         searchView?.setOnQueryTextListener(queryTextListener)
         return super.onOptionsItemSelected(item)

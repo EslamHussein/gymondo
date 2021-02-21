@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gymondo.app.domain.usecases.GetRepositoryDetailsUseCase
 import com.gymondo.app.domain.usecases.GitHubSearchUseCase
+import com.gymondo.presentaion.error.EmptyDataException
 import com.gymondo.presentaion.error.ErrorHandler
 import com.gymondo.presentaion.mapper.RepositoryMapper
 import com.gymondo.presentaion.mapper.SearchResponseMapper
@@ -40,6 +41,7 @@ class GitHubViewModel(
         if (query != searchKeyWord) {
             searchKeyWord = query
             searchResponse = SearchResponseView(null, emptyList())
+            repositoriesMutableStateFlow.value = RepositoriesListState.Idle
         }
         viewModelScope.launch {
             gitHubSearchUseCase.execute(
@@ -60,9 +62,16 @@ class GitHubViewModel(
                 )
             }.collect {
                 searchResponse = it
-                repositoriesMutableStateFlow.value = RepositoriesListState.Success(
-                    searchResponse.repositories
-                )
+                if (it.repositories.isNullOrEmpty()) {
+                    repositoriesMutableStateFlow.value = RepositoriesListState.Failure(
+                        errorHandler.getErrorMessage(EmptyDataException())
+                    )
+                } else {
+                    repositoriesMutableStateFlow.value = RepositoriesListState.Success(
+                        searchResponse.repositories
+                    )
+                }
+
             }
         }
     }

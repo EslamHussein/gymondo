@@ -3,6 +3,7 @@ package com.gymondo.app.domain.usecases
 import com.gymondo.app.domain.GitHubRepository
 import com.gymondo.app.domain.UseCase
 import com.gymondo.app.domain.dto.SearchResponse
+import com.gymondo.app.domain.error.NoMoreDataFoundException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
@@ -11,9 +12,7 @@ class GitHubSearchUseCase(private val gitHubRepository: GitHubRepository) :
 
     override suspend fun execute(params: Params): Flow<SearchResponse> {
         return if (params.totalNumberOfPages != null && params.nextPage > params.totalNumberOfPages)
-            flow {
-                throw Exception("No More data fount")
-            }
+            flow { throw NoMoreDataFoundException() }
         else {
             gitHubRepository.searchRepositories(params)
         }
