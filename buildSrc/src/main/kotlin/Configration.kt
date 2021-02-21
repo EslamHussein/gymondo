@@ -84,6 +84,11 @@ public object Libraries {
             "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion"
     }
 
+    object Coil {
+        private const val coilVersion = "1.1.1"
+        const val coil = "io.coil-kt:coil:${coilVersion}"
+    }
+
     object Koin {
         private const val koinVersion = "2.2.2"
 

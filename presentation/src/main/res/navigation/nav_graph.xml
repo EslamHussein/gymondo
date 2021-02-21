@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/repositoriesListFragment"
         android:name="com.gymondo.presentaion.fragments.RepositoriesListFragment"
-        android:label="fragment_repositories_list"
+        android:label="@string/github"
         tools:layout="@layout/fragment_repositories_list">
         <action
             android:id="@+id/action_repositoriesListFragment_to_repositoryDetailsFragment"
@@ -17,7 +17,7 @@
     <fragment
         android:id="@+id/repositoryDetailsFragment"
         android:name="com.gymondo.presentaion.fragments.RepositoryDetailsFragment"
-        android:label="fragment_repository_details"
+        android:label="@string/github"
         tools:layout="@layout/fragment_repository_details">
         <argument
             android:name="username"

@@ -1,4 +1,3 @@
-import com.gymondo.app.Configration
 import com.gymondo.app.Libraries
 import com.gymondo.app.Modules
 
@@ -59,6 +58,8 @@ dependencies {
     implementation Libraries.AndroidXSupport.viewModel
     implementation Libraries.AndroidXSupport.liveData
     implementation Libraries.AndroidXSupport.viewModelSavedState
+
+    implementation Libraries.Coil.coil
 
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 

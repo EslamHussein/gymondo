@@ -1,15 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.RepositoryDetailsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:id="@+id/dataTextView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
 
-</FrameLayout>
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/repoDetailsContentGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="repositoryImageView,ownerNameTextView,projectDescriptionTextView,projectNameTextView,repositoryUrlWebView,starTextView" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/errorTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/repositoryImageView"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="@dimen/medium_margin"
+        android:layout_marginTop="@dimen/small_margin"
+        android:scaleType="centerCrop"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/ownerNameTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/medium_margin"
+        android:layout_marginEnd="@dimen/small_margin"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/repositoryImageView"
+        app:layout_constraintTop_toTopOf="@+id/repositoryImageView"
+        tools:text="Joe Birch" />
+
+    <TextView
+        android:id="@+id/projectNameTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/medium_margin"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="@dimen/small_margin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/repositoryImageView"
+        app:layout_constraintTop_toBottomOf="@+id/ownerNameTextView"
+        tools:text="Some project" />
+
+
+    <TextView
+        android:id="@+id/projectDescriptionTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/medium_margin"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="@dimen/small_margin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/repositoryImageView"
+        app:layout_constraintTop_toBottomOf="@+id/projectNameTextView"
+        tools:text="Some project" />
+
+    <TextView
+        android:id="@+id/starTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/medium_margin"
+        android:layout_marginTop="@dimen/small_margin"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:drawableStartCompat="@android:drawable/star_big_on"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/projectDescriptionTextView" />
+
+    <WebView
+        android:id="@+id/repositoryUrlWebView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/medium_margin"
+        android:layout_marginTop="@dimen/small_margin"
+        android:layout_marginEnd="@dimen/medium_margin"
+        android:layout_marginBottom="@dimen/small_margin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/starTextView" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

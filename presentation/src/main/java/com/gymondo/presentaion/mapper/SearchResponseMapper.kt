@@ -15,7 +15,7 @@ class SearchResponseMapper(private val repositoryMapper: RepositoryMapper) :
 
     override fun mapFromView(view: SearchResponseView): SearchResponse {
         return SearchResponse(
-            view.totalCount, view.repositories.map { repositoryMapper.mapFromView(it) }
+            view.totalCount ?: 0, view.repositories.map { repositoryMapper.mapFromView(it) }
         )
     }
 }

@@ -19,7 +19,7 @@ class GitHubRepositoryImpl(
     override suspend fun searchRepositories(params: GitHubSearchUseCase.Params): Flow<SearchResponse> {
         return gitHubRemoteDataSource.searchRepositories(
             params.query,
-            params.pageNumber,
+            params.nextPage,
             params.itemsPerPage
         ).map { searchResponseMapper.mapFromEntity(it) }
     }

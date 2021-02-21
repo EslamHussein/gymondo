@@ -5,13 +5,22 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
+import coil.transform.CircleCropTransformation
 import com.gymondo.presentaion.R
 import com.gymondo.presentaion.model.RepositoryView
 
-class RepositoriesListAdapter constructor(private var onProjectClicked: OnProjectClickListener?) :
-    AbstractPagingAdapter<RepositoryView, RepositoriesListAdapter.ViewHolder>() {
+class RepositoriesListAdapter(
+    private var data: List<RepositoryView> = emptyList(),
+    private var onRepositoryClicked: OnRepositoryClickListener?
+) :
+    RecyclerView.Adapter<RepositoriesListAdapter.ViewHolder>() {
 
+    override fun getItemCount(): Int {
+        return data.count()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val itemView = LayoutInflater
@@ -21,38 +30,48 @@ class RepositoriesListAdapter constructor(private var onProjectClicked: OnProjec
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val project = data[position]
-        holder.ownerNameText.text = project.owner.name
-        holder.projectNameText.text = project.name
+        val repository = data[position]
+        holder.ownerNameTextView.text = repository.owner.name
+        holder.repositoryNameTextView.text = repository.name
 
-/*
-        Glide.with(holder.itemView.context)
-            .load(project.avatarUrl)
-            .apply(RequestOptions.circleCropTransform())
-            .into(holder.avatarImage)
-*/
-
+        holder.avatarImageView.load(repository.owner.avatarUrl) {
+            crossfade(true)
+            transformations(CircleCropTransformation())
+        }
 
         holder.itemView.setOnClickListener {
-            onProjectClicked?.onItemClickListener(project)
-
+            onRepositoryClicked?.onItemClicked(repository)
         }
     }
 
+    fun updateData(updatedList: List<RepositoryView>) {
+
+        val diffResult = DiffUtil.calculateDiff(
+            RepositoriesDiffCallback(
+                updatedList,
+                data
+            )
+        )
+        this.data = updatedList
+        diffResult.dispatchUpdatesTo(this)
+
+    }
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        var avatarImage: ImageView
-        var ownerNameText: TextView
-        var projectNameText: TextView
+        var avatarImageView: ImageView
+        var ownerNameTextView: TextView
+        var repositoryNameTextView: TextView
 
         init {
-            avatarImage = view.findViewById(R.id.ownerAvatarImageView)
-            ownerNameText = view.findViewById(R.id.ownerNameTextView)
-            projectNameText = view.findViewById(R.id.projectNameTextView)
+            avatarImageView = view.findViewById(R.id.ownerAvatarImageView)
+            ownerNameTextView = view.findViewById(R.id.ownerNameTextView)
+            repositoryNameTextView = view.findViewById(R.id.repositoryNameTextView)
         }
     }
 
-    interface OnProjectClickListener {
-        fun onItemClickListener(project: RepositoryView)
+    interface OnRepositoryClickListener {
+        fun onItemClicked(repository: RepositoryView)
     }
+
+
 }

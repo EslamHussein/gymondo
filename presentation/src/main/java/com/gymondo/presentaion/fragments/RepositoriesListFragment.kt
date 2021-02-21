@@ -10,33 +10,36 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.gymondo.presentaion.EndlessRecyclerViewScrollListener
 import com.gymondo.presentaion.GitHubViewModel
 import com.gymondo.presentaion.R
 import com.gymondo.presentaion.adapters.RepositoriesListAdapter
 import com.gymondo.presentaion.databinding.FragmentRepositoriesListBinding
 import com.gymondo.presentaion.model.RepositoryView
+import com.gymondo.presentaion.state.RepositoriesListState
+import kotlinx.coroutines.flow.collect
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 
 class RepositoriesListFragment : Fragment(R.layout.fragment_repositories_list),
-    RepositoriesListAdapter.OnProjectClickListener {
+    RepositoriesListAdapter.OnRepositoryClickListener {
 
-    private var fragmentBlankBinding: FragmentRepositoriesListBinding? = null
+    private var binding: FragmentRepositoriesListBinding? = null
     private var projectsAdapter: RepositoriesListAdapter? = null
     private val viewModel: GitHubViewModel by sharedViewModel()
 
     private lateinit var viewManager: LinearLayoutManager
-    private var onItemClicked: RepositoriesListAdapter.OnProjectClickListener? = null
+    private var onItemClicked: RepositoriesListAdapter.OnRepositoryClickListener? = null
     private var searchView: SearchView? = null
     private var queryTextListener: SearchView.OnQueryTextListener? = null
 
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        onItemClicked = activity as? RepositoriesListAdapter.OnProjectClickListener
+        onItemClicked = activity as? RepositoriesListAdapter.OnRepositoryClickListener
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,31 +49,46 @@ class RepositoriesListFragment : Fragment(R.layout.fragment_repositories_list),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        fragmentBlankBinding = FragmentRepositoriesListBinding.bind(view)
+        binding = FragmentRepositoriesListBinding.bind(view)
         Log.d(javaClass.name, "onViewCreated")
 
         retainInstance = true
         viewManager = LinearLayoutManager(context)
 
-        projectsAdapter = RepositoriesListAdapter(onProjectClicked = this)
+        projectsAdapter = RepositoriesListAdapter(onRepositoryClicked = this)
 
-        fragmentBlankBinding?.repositoriesRecyclerView?.apply {
+        binding?.repositoriesRecyclerView?.apply {
             layoutManager = viewManager
             adapter = projectsAdapter
         }
-        viewModel.repositoriesMutableLiveData.observe(viewLifecycleOwner, Observer { it ->
-            it.data?.let {
-                projectsAdapter?.addItems(it)
+        lifecycleScope.launchWhenStarted {
+            viewModel.repositoriesStateFlow.collect {
+
+                when (it) {
+
+                    is RepositoriesListState.Failure -> {
+                    }
+
+                    RepositoriesListState.Idle -> {
+
+                    }
+                    RepositoriesListState.Loading -> {
+                    }
+                    is RepositoriesListState.Success -> projectsAdapter?.updateData(it.data)
+                }
+
             }
-        })
+        }
 
-//        projectsSearchSwipeRefresh.isEnabled = false
 
-        /* projectsSearchRecyclerView.addOnScrollListener(object : EndlessRecyclerViewScrollListener(viewManager) {
-             override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
-                 presenter.searchTrending(projectsAdapter?.getNextPageNumber() ?: 0)
-             }
-         })*/
+//       projectsSearchSwipeRefresh.isEnabled = false
+
+        binding?.repositoriesRecyclerView
+            ?.addOnScrollListener(object : EndlessRecyclerViewScrollListener(viewManager) {
+                override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
+                    viewModel.loadMore(page.plus(1))
+                }
+            })
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -104,16 +122,20 @@ class RepositoriesListFragment : Fragment(R.layout.fragment_repositories_list),
         if (item.itemId == R.id.action_search) {
             return false
         }
-        searchView!!.setOnQueryTextListener(queryTextListener)
+        searchView?.setOnQueryTextListener(queryTextListener)
         return super.onOptionsItemSelected(item)
     }
 
+    override fun onDestroyView() {
+        binding = null
+        super.onDestroyView()
+    }
 
-    override fun onItemClickListener(project: RepositoryView) {
+    override fun onItemClicked(repository: RepositoryView) {
         val action =
             RepositoriesListFragmentDirections.actionRepositoriesListFragmentToRepositoryDetailsFragment(
-                project.owner.name,
-                project.name
+                repository.owner.name,
+                repository.name
             )
         view?.findNavController()?.navigate(action)
     }
