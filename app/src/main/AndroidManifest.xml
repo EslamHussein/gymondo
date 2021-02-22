@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.gymondo">
+    package="com.gymondo.app">
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -8,8 +9,9 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:name=".GymondoApp"
         android:theme="@style/Theme.Gymondo">
-        <activity android:name=".MainActivity">
+        <activity android:name="com.gymondo.app.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

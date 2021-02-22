@@ -1,0 +1,75 @@
+import com.gymondo.app.Libraries
+import com.gymondo.app.Modules
+
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'androidx.navigation.safeargs.kotlin'
+}
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.2"
+
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+        // Enable Coroutines and Flow APIs
+        freeCompilerArgs += "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi"
+        freeCompilerArgs += "-Xopt-in=kotlinx.coroutines.FlowPreview"
+    }
+    buildFeatures {
+        viewBinding true
+    }
+
+}
+
+dependencies {
+    implementation project(Modules.domain)
+
+    implementation Libraries.Kotlin.kotlinStdlib
+    implementation Libraries.AndroidXSupport.appcompat
+    implementation Libraries.AndroidXSupport.coreKTX
+    implementation Libraries.AndroidXSupport.constraintLayout
+    implementation Libraries.AndroidXSupport.material
+
+    implementation Libraries.AndroidXSupport.navigationFragment
+    implementation Libraries.AndroidXSupport.navigationUi
+
+    implementation Libraries.AndroidXSupport.viewModel
+    implementation Libraries.AndroidXSupport.liveData
+    implementation Libraries.AndroidXSupport.viewModelSavedState
+
+    implementation Libraries.Coil.coil
+
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+
+    testImplementation(Libraries.Testing.junit)
+    testImplementation(Libraries.Testing.mockito)
+
+    implementation Libraries.Koin.koin
+    implementation Libraries.Koin.koinViewModel
+    implementation Libraries.Coroutines.coroutines
+
+    androidTestImplementation(Libraries.Testing.junitExt)
+    androidTestImplementation(Libraries.Testing.espresso)
+}
