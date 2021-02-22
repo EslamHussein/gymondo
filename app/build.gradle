@@ -38,6 +38,10 @@ android {
         freeCompilerArgs += "-Xopt-in=kotlinx.coroutines.FlowPreview"
 
     }
+    packagingOptions {
+        pickFirst  'META-INF/*'
+    }
+
 }
 
 dependencies {
