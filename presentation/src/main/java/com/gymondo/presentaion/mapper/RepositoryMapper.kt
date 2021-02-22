@@ -3,7 +3,8 @@ package com.gymondo.presentaion.mapper
 import com.gymondo.app.domain.dto.Repository
 import com.gymondo.presentaion.model.RepositoryView
 
-class RepositoryMapper(private val ownerMapper: OwnerMapper) : Mapper<RepositoryView, Repository> {
+open class RepositoryMapper(private val ownerMapper: OwnerMapper) :
+    Mapper<RepositoryView, Repository> {
     override fun mapToView(domain: Repository): RepositoryView {
 
 
