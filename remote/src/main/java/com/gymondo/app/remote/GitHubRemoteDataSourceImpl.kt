@@ -5,16 +5,13 @@ import com.gymondo.app.remote.mapper.SearchResponseMapper
 import com.gymondo.data.model.RepositoryEntity
 import com.gymondo.data.model.SearchResponseEntity
 import com.gymondo.data.repository.GitHubRemoteDataSource
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
 
 class GitHubRemoteDataSourceImpl(
     private val gitHubApi: GitHubApi,
     private val searchResponseMapper: SearchResponseMapper,
-    private val repositoryMapper: RepositoryMapper,
-    private val ioDispatcher: CoroutineDispatcher
+    private val repositoryMapper: RepositoryMapper
 ) : GitHubRemoteDataSource {
 
     override suspend fun searchRepositories(
@@ -33,7 +30,7 @@ class GitHubRemoteDataSourceImpl(
                 )
             )
 
-        }.flowOn(ioDispatcher)
+        }
     }
 
     override suspend fun getRepoDetails(
@@ -49,6 +46,6 @@ class GitHubRemoteDataSourceImpl(
                     )
                 )
             )
-        }.flowOn(ioDispatcher)
+        }
     }
 }

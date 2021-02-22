@@ -3,7 +3,7 @@ package com.gymondo.data.mapper
 import com.gymondo.app.domain.dto.Repository
 import com.gymondo.data.model.RepositoryEntity
 
-class RepositoryMapper(private val ownerMapper: OwnerMapper) :
+open class RepositoryMapper(private val ownerMapper: OwnerMapper) :
     EntityMapper<RepositoryEntity, Repository> {
     override fun mapFromEntity(entity: RepositoryEntity): Repository {
         return Repository(

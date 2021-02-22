@@ -3,7 +3,7 @@ package com.gymondo.data.mapper
 import com.gymondo.app.domain.dto.SearchResponse
 import com.gymondo.data.model.SearchResponseEntity
 
-class SearchResponseMapper(private val repositoryMapper: RepositoryMapper) :
+open class SearchResponseMapper(private val repositoryMapper: RepositoryMapper) :
     EntityMapper<SearchResponseEntity, SearchResponse> {
     override fun mapFromEntity(entity: SearchResponseEntity): SearchResponse {
         return SearchResponse(

@@ -11,6 +11,7 @@ import com.gymondo.presentaion.mapper.SearchResponseMapper
 import com.gymondo.presentaion.model.SearchResponseView
 import com.gymondo.presentaion.state.RepositoriesListState
 import com.gymondo.presentaion.state.RepositoryDetailsState
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
@@ -19,7 +20,8 @@ class GitHubViewModel(
     private val getRepositoryDetailsUseCase: GetRepositoryDetailsUseCase,
     private val searchResponseMapper: SearchResponseMapper,
     private val repositoryMapper: RepositoryMapper,
-    private val errorHandler: ErrorHandler
+    private val errorHandler: ErrorHandler,
+    private val dispatcher: CoroutineDispatcher
 
 ) : ViewModel() {
 
@@ -50,7 +52,7 @@ class GitHubViewModel(
                     searchResponse.totalCount, nextPage,
                     20
                 )
-            ).onStart {
+            ).flowOn(dispatcher).onStart {
                 repositoriesMutableStateFlow.value = RepositoriesListState.Loading
             }.catch {
                 repositoriesMutableStateFlow.value =

@@ -41,8 +41,7 @@ val remoteModule = module {
         GitHubRemoteDataSourceImpl(
             get(),
             get(),
-            get(),
-            get() // TODO should be inject by interface in testing
+            get()
         )
     } bind GitHubRemoteDataSource::class
 
