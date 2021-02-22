@@ -7,7 +7,7 @@ import com.gymondo.app.domain.error.NoMoreDataFoundException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-open class GitHubSearchUseCase(private val gitHubRepository: GitHubRepository) :
+class GitHubSearchUseCase(private val gitHubRepository: GitHubRepository) :
     UseCase<GitHubSearchUseCase.Params, Flow<SearchResponse>> {
 
     override suspend fun execute(params: Params): Flow<SearchResponse> {

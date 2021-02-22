@@ -69,9 +69,7 @@ dependencies {
     implementation Libraries.Koin.koin
     implementation Libraries.Koin.koinViewModel
     implementation Libraries.Coroutines.coroutines
-    testImplementation Libraries.Coroutines.coroutinesTest
 
-    testImplementation(Libraries.Testing.junitExt)
-    testImplementation(Libraries.Testing.espresso)
-    testImplementation(Libraries.Testing.turbine)
+    androidTestImplementation(Libraries.Testing.junitExt)
+    androidTestImplementation(Libraries.Testing.espresso)
 }

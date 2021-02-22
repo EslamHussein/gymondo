@@ -4,7 +4,7 @@ import com.gymondo.app.domain.dto.SearchResponse
 import com.gymondo.presentaion.model.SearchResponseView
 
 
-open class SearchResponseMapper(private val repositoryMapper: RepositoryMapper) :
+class SearchResponseMapper(private val repositoryMapper: RepositoryMapper) :
     Mapper<SearchResponseView, SearchResponse> {
 
     override fun mapToView(domain: SearchResponse): SearchResponseView {
