@@ -5,13 +5,10 @@ import com.gymondo.app.remote.di.remoteModule
 import com.gymondo.data.repository.GitHubRemoteDataSource
 import com.nhaarman.mockitokotlin2.any
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.runBlockingTest
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
-import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.koin.core.context.startKoin
@@ -39,62 +36,73 @@ class GitHubRemoteDataSourceImplTest : AutoCloseKoinTest() {
         gitHubRemoteDataSource = get()
     }
 
+    @ExperimentalCoroutinesApi
     @ExperimentalTime
     @Test
-    fun `test github search with success response`() {
-        runBlockingTest {
-            val mockedResponse = MockResponse().apply {
-                setResponseCode(200)
-                setBody(getJson("json/GitHub/repo_search.json"))
-            }
-            mockServer.enqueue(mockedResponse)
-            gitHubRemoteDataSource.searchRepositories("any", 1, 1)
-                .test {
-                    Assert.assertNotNull(this)
-                    expectError()
-                }
-        }
-    }
-
-    @Test(expected = Exception::class)
-    fun `test github search with error response`() {
-        runBlocking {
-
-            val mockedResponse = MockResponse().apply {
-                setResponseCode(404)
-                setBody(getJson("json/GitHub/error.json"))
-            }
-            mockServer.enqueue(mockedResponse)
-            gitHubRemoteDataSource.searchRepositories(any(), any(), any()).first()
-
-        }
-    }
-
-
-    @Test
-    fun `test get repository details with success response`() = runBlocking {
+    fun `test github search with success response`() = dispatcher.runBlockingTest {
 
         val mockedResponse = MockResponse().apply {
             setResponseCode(200)
-            setBody(getJson("json/GitHub/repo_details.json"))
+            setBody(getJson("json/GitHub/repo_search.json"))
         }
         mockServer.enqueue(mockedResponse)
-        val result =
-            gitHubRemoteDataSource.getRepoDetails("entityframeworktutorial", "EF6-DBFirst-Demo")
-//        assert(result is DataResult.Success)
+        gitHubRemoteDataSource.searchRepositories("any", 1, 1)
+            .test {
+                expectItem()
+                expectComplete()
+            }
+
     }
 
-
-    @Test
-    fun `test get repository details with error response`() = runBlocking {
+    @ExperimentalTime
+    @ExperimentalCoroutinesApi
+    @Test(expected = Exception::class)
+    fun `test github search with error response`() = dispatcher.runBlockingTest {
 
         val mockedResponse = MockResponse().apply {
             setResponseCode(404)
             setBody(getJson("json/GitHub/error.json"))
         }
         mockServer.enqueue(mockedResponse)
-        val result = gitHubRemoteDataSource.getRepoDetails("user", "repoName")
-//        assert(result is DataResult.Error)
+        gitHubRemoteDataSource.searchRepositories(any(), any(), any()).test {
+            expectError()
+        }
+    }
+
+
+    @ExperimentalTime
+    @ExperimentalCoroutinesApi
+    @Test
+    fun `test get repository details with success response`() = dispatcher.runBlockingTest {
+
+        val mockedResponse = MockResponse().apply {
+            setResponseCode(200)
+            setBody(getJson("json/GitHub/repo_details.json"))
+        }
+        mockServer.enqueue(mockedResponse)
+
+        gitHubRemoteDataSource.getRepoDetails("entityframeworktutorial", "EF6-DBFirst-Demo").test {
+            expectItem()
+            expectComplete()
+        }
+
+    }
+
+
+    @ExperimentalTime
+    @ExperimentalCoroutinesApi
+    @Test
+    fun `test get repository details with error response`() = dispatcher.runBlockingTest {
+
+        val mockedResponse = MockResponse().apply {
+            setResponseCode(404)
+            setBody(getJson("json/GitHub/error.json"))
+        }
+        mockServer.enqueue(mockedResponse)
+        gitHubRemoteDataSource.getRepoDetails("user", "repoName").test {
+            expectError()
+        }
+
     }
 
     private fun getJson(path: String): String {
