@@ -13,10 +13,12 @@ java {
 dependencies {
     implementation Libraries.Kotlin.kotlinStdlib
     implementation Libraries.Coroutines.coroutines
+    implementation Libraries.Coroutines.coroutinesTest
 
     implementation Libraries.Koin.koin
     implementation Libraries.Koin.koinTest
 
     testImplementation Libraries.Testing.junit
     testImplementation Libraries.Testing.mockito
+    testImplementation Libraries.Testing.turbine
 }

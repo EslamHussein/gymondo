@@ -4,10 +4,10 @@ import app.cash.turbine.test
 import com.gymondo.app.domain.dto.SearchResponse
 import com.gymondo.app.domain.usecases.GetRepositoryDetailsUseCase
 import com.gymondo.app.domain.usecases.GitHubSearchUseCase
+import com.gymondo.app.domain.usecases.factory.makeRepository
 import com.gymondo.data.mapper.RepositoryMapper
 import com.gymondo.data.mapper.SearchResponseMapper
 import com.gymondo.data.model.SearchResponseEntity
-import com.gymondo.data.test.factory.makeRepository
 import com.gymondo.data.test.factory.makeRepositoryEntity
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doReturn
@@ -44,7 +44,6 @@ class GitHubRepositoryImplTest {
         whenever(searchResponseMapper.mapFromEntity(any())) doReturn SearchResponse(
             1, listOf(makeRepository())
         )
-
     }
 
     @ExperimentalTime

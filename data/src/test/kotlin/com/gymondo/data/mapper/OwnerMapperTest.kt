@@ -1,6 +1,6 @@
 package com.gymondo.data.mapper
 
-import com.gymondo.data.test.factory.makeOwner
+import com.gymondo.app.domain.usecases.factory.makeOwner
 import com.gymondo.data.test.factory.makeOwnerEntity
 import org.junit.Assert.assertEquals
 import org.junit.Test
